@@ -1,0 +1,32 @@
+{
+  "name": "t2h-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend for codename T2H",
+  "main": "index.js",
+  "scripts": {
+    "test": "node src/index.js --env-file .env",
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/supern64/t2h-backend.git"
+  },
+  "author": "SuperN64, Hundredzz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/supern64/t2h-backend/issues"
+  },
+  "homepage": "https://github.com/supern64/t2h-backend#readme",
+  "dependencies": {
+    "@prisma/client": "^5.6.0",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "memorystore": "^1.6.7"
+  },
+  "devDependencies": {
+    "prisma": "^5.6.0"
+  }
+}
