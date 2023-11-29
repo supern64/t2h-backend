@@ -16,5 +16,12 @@ model User {
   nickname  String?
   gender    String?
   password  String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
+}
+
+enum Role {
+  USER
+  DOCTOR
+  ADMIN
 }

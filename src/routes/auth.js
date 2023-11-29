@@ -1,13 +1,13 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { response } = require("../utils");
-const checkUser = require("../middleware/checkUser");
+const { checkUser } = require("../middleware/checkUser");
 const PrismaClient = require("@prisma/client").PrismaClient;
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
-router.use(express.urlencoded({ extended: true }));
+router.use(express.json());
 
 router.post("/login", async (req, res) => {
     if (req.session.user) {
@@ -39,7 +39,8 @@ router.post("/login", async (req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         nickname: user.nickname,
-        gender: user.gender
+        gender: user.gender,
+        role: user.role
     }
     req.session.user = user;
     res.json(response("SUCCESS", { user: userShown }));

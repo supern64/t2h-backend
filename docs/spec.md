@@ -60,7 +60,7 @@ User not found
 ```
 ### POST /user/create
 ลงทะเบียนผู้ใช้
-#### Request Body (application/x-www-form-urlencoded)
+#### Request Body (JSON)
 เป็นข้อมูลของผู้ใช้
 - email: E-mail *
 - password: รหัสผ่าน *
@@ -105,7 +105,7 @@ User with email already exists
 ## การลงชื่อเข้าใช้
 ข้อมูลทั้งหมดจะอยู่บน Cookie ของ Backend (ไม่ควรมีปัญหาเพราะมีโดเมนให้ใช้อยู่ ให้เป็นโดเมนเดียวกันกับ Frontend)
 ### POST /auth/login
-#### Request Body (application/x-www-form-urlencoded)
+#### Request Body (JSON)
 - email: E-mail ของผู้ใช้ *
 - password: Password *
 #### Response

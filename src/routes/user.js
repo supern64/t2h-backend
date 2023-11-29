@@ -1,13 +1,13 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { response } = require("../utils");
-const checkUser = require("../middleware/checkUser");
+const { checkUser } = require("../middleware/checkUser");
 const PrismaClient = require("@prisma/client").PrismaClient;
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
-router.use(express.urlencoded({ extended: true }));
+router.use(express.json());
 
 router.get("/me", checkUser, async (req, res) => {
     const user = req.session.user;
@@ -18,7 +18,8 @@ router.get("/me", checkUser, async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             nickname: user.nickname,
-            gender: user.gender
+            gender: user.gender,
+            role: user.role
         } 
     }));
 });
@@ -39,7 +40,8 @@ router.get("/:id", checkUser, async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             nickname: user.nickname,
-            gender: user.gender
+            gender: user.gender,
+            role: user.role
         } 
     }));
 });
@@ -54,12 +56,12 @@ router.post("/create", async (req, res) => {
     try {
         const user = await prisma.user.create({
             data: {
-                email, firstName, lastName, nickname, gender, password: hashedPassword
+                email, firstName, lastName, nickname, gender, role, password: hashedPassword
             }
         });
         res.json(response("SUCCESS", {
             user: {
-                id: user.id, firstName, lastName, nickname, gender
+                id: user.id, firstName, lastName, nickname, gender, role
             }
         }));
     } catch (e) {
