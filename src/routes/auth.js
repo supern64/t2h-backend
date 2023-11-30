@@ -40,6 +40,7 @@ router.post("/login", async (req, res) => {
         lastName: user.lastName,
         nickname: user.nickname,
         gender: user.gender,
+        birthday: user.birthday,
         role: user.role
     }
     req.session.user = user;

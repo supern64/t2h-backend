@@ -4,24 +4,46 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url  	    = env("DATABASE_URL")
+  url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
+  id        String    @id @default(cuid())
+  email     String    @unique
   firstName String?
   lastName  String?
   nickname  String?
   gender    String?
+  birthday  DateTime?
   password  String
-  role      Role     @default(USER)
-  createdAt DateTime @default(now())
+  role      Role      @default(USER)
+  createdAt DateTime  @default(now())
+  chats     Chat[]
+  Message   Message[]
 }
 
 enum Role {
   USER
   DOCTOR
   ADMIN
+}
+
+model Chat {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  messages  Message[]
+  users     User[]
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  text      String
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }
