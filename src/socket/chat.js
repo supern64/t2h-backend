@@ -28,6 +28,19 @@ module.exports = (io, socket) => {
         socket.session = session;
         session.socket = socket;
         session.token = null;
+        prisma.chat.findMany({
+            where: {
+                users: {
+                    some: {
+                        id: session.user.id
+                    }
+                }
+            }
+        }).then((rooms) => {
+            for (const room of rooms) {
+                socket.join(room.id);
+            }
+        });
         callback(response("SUCCESS", {}));
     });
 
@@ -92,12 +105,7 @@ module.exports = (io, socket) => {
                         nickname: socket.session.user.nickname
                     },
                 }
-                for (user of chatRoom.users) {
-                    const userOnline = store.chat.sessions.find((session) => user.id === session.user.id);
-                    if (userOnline) {
-                        userOnline.socket.emit("message", messageObject, room);
-                    }
-                }
+                io.to(room).emit("message", messageObject, room);
                 callback(response("SUCCESS", {}));
             }).catch((error) => {
                 console.log(error)

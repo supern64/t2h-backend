@@ -20,7 +20,8 @@ model User {
   role      Role      @default(USER)
   createdAt DateTime  @default(now())
   chats     Chat[]
-  Message   Message[]
+  messages  Message[]
+  assessments Assessment[]
 }
 
 enum Role {
@@ -45,5 +46,13 @@ model Message {
   chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    String
   user      User     @relation(fields: [userId], references: [id])
+  userId    String
+}
+
+model Assessment {
+  id        String @id @default(cuid())
+  createdAt DateTime @default(now())
+  score     Int
+  user      User @relation(fields: [userId], references: [id])
   userId    String
 }

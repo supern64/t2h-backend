@@ -69,6 +69,12 @@ router.post("/room/create/:id", checkUser, async (req, res) => {
             }
         }
     });
+    if (store.chat.sessions.find((session) => session.user.id === req.params.id)) {
+        store.chat.sessions.find((session) => session.user.id === req.params.id).socket.join(room.id)
+    }
+    if (store.chat.sessions.find((session) => session.user.id === req.session.user.id)) {
+        store.chat.sessions.find((session) => session.user.id === req.session.user.id).socket.join(room.id)
+    }
     const shownRoom = {
         id: room.id,
         users: room.users

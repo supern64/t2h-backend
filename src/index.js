@@ -10,12 +10,16 @@ const chatHandler = require("./socket/chat");
 const app = express();
 const server = createServer(app);
 const io = new Server(server, {
-    connectionStateRecovery: {}
+    connectionStateRecovery: {},
+    cors: {
+        origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : "",
+        credentials: true
+    }
 });
 
 // middleware for everything
 app.use(cors({
-    origin: process.env.NODE_ENV === "development" ? ["http://localhost:5173", "https://amritb.github.io"] : "",
+    origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : "",
     credentials: true
 }));
 app.use(session({
@@ -31,6 +35,7 @@ app.use(session({
 app.use("/user", require("./routes/user"));
 app.use("/auth", require("./routes/auth"));
 app.use("/chat", require("./routes/chat"));
+app.use("/assessment", require("./routes/assessment"));
 
 // root routes
 app.get("/", (req, res) => {
