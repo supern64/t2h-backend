@@ -1,7 +1,6 @@
 const express = require("express");
 const { response } = require("../utils");
 const { checkUser, checkDoctor } = require("../middleware/checkUser");
-const { randomBytes } = require("node:crypto");
 const PrismaClient = require("@prisma/client").PrismaClient;
 
 const router = express.Router();
