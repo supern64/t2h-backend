@@ -12,14 +12,14 @@ const server = createServer(app);
 const io = new Server(server, {
     connectionStateRecovery: {},
     cors: {
-        origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : "",
+        origin: process.env.FRONTEND_LOCATION || "http://localhost:5173",
         credentials: true
     }
 });
 
 // middleware for everything
 app.use(cors({
-    origin: process.env.NODE_ENV === "development" ? "http://localhost:5173" : "",
+    origin: process.env.FRONTEND_LOCATION || "http://localhost:5173",
     credentials: true
 }));
 app.use(session({
@@ -51,6 +51,6 @@ io.on("connection", (socket) => {
 });
 
 server.listen(process.env.PORT || 3000, () => {
-    console.log(`Started in ${process.env.NODE_ENV} mode`)
+    console.log(`Server running for frontend ${process.env.FRONTEND_LOCATION || "http://localhost:5173"}`)
     console.log("Backend running on port: " + process.env.PORT || 3000);
 })
