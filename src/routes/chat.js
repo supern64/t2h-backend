@@ -83,13 +83,13 @@ router.post("/room/create/:id", checkUser, async (req, res) => {
 });
 
 router.get("/room/:id/messages/get", checkUser, async (req, res) => {
-    if (!req.query.id) {
+    if (!req.params.id) {
         res.status(400).json(response("ERROR", { error: "Missing room ID!" }));
         return;
     }
     const room = await prisma.chat.findUnique({
         where: {
-            id: req.query.id
+            id: req.params.id
         }
     });
     if (!room) {
@@ -98,10 +98,20 @@ router.get("/room/:id/messages/get", checkUser, async (req, res) => {
     }
     const messages = await prisma.message.findMany({
         where: {
-            chatId: req.query.id
+            chatId: req.params.id
         },
         orderBy: {
             createdAt: "asc"
+        },
+        include: {
+            user: {
+                select: {
+                    id: true,
+                    firstName: true,
+                    lastName: true,
+                    nickname: true
+                }
+            }
         }
     });
     res.json(response("SUCCESS", { messages }));

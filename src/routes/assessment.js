@@ -18,6 +18,14 @@ router.get("/user/me", checkUser, async (req, res) => {
         },
         orderBy: {
             createdAt: "desc"
+        },
+        include: {
+            answers: {
+                select: {
+                    question: true,
+                    answer: true
+                }
+            }
         }
     });
     res.json(response("SUCCESS", { assessments }));
@@ -41,6 +49,12 @@ router.get("/user/:id", checkDoctor, async (req, res) => {
                     lastName: true,
                     nickname: true
                 }
+            },
+            answers: {
+                select: {
+                    question: true,
+                    answer: true
+                }
             }
         }
     });
@@ -48,9 +62,13 @@ router.get("/user/:id", checkDoctor, async (req, res) => {
 })
 
 router.post("/create", checkUser, async (req, res) => {
+    // answers object has question and answer parameters
     const assessment = await prisma.assessment.create({
         data: {
             score: req.body.score,
+            answers: {
+                create: req.body.answers
+            },
             user: {
                 connect: {
                     id: req.session.user.id

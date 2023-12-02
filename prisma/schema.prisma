@@ -54,5 +54,14 @@ model Assessment {
   createdAt DateTime @default(now())
   score     Int
   user      User @relation(fields: [userId], references: [id])
+  answers   FreeFormAnswer[]
   userId    String
+}
+
+model FreeFormAnswer {
+  id        String @id @default(cuid())
+  question  String
+  answer    String
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+  assessmentId String
 }
